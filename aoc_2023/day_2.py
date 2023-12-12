@@ -1,3 +1,6 @@
+from icecream import ic
+
+
 def sep_num(string: str) -> tuple[int, str]:
     num = ""
     for char in string:
@@ -38,9 +41,30 @@ def valid_game(game: str) -> int:
     return 0
 
 
+def larger_values(game: str) -> list[int]:
+    _, games = sep_games(game)
+    new_group = {"red": [], "green": [], "blue": []}
+    for i in games:
+        for k, v in i.items():
+            new_group[k].append(v)
+    new_group = {k: sorted(v) for k, v in new_group.items()}
+    larger = [i[-1] for i in new_group.values()]
+    return larger
+
+
+def mult_list(arr: list[int]) -> int:
+    total = 1
+    for val in arr:
+        total *= val
+    return total
+
+
 def main() -> None:
     with open("aoc_2023/day_2.input", "r") as file:
-        print(f"day 2: {sum([valid_game(x.strip()) for x in file.readlines()])}")
+        buffer = file.readlines()
+        result_1 = sum([valid_game(x.strip()) for x in buffer])
+        result_2 = sum([mult_list(larger_values(x.strip())) for x in buffer])
+        print(f"day 2.1: {result_1}\nday 2.2: {result_2}")
 
 
 if __name__ == "__main__":
